@@ -1,0 +1,32 @@
+<section class="w-full py-10 px-6 bg-[#F9F8FF]">
+  <h2 class="text-3xl font-bold text-center mb-8 text-[#3e3948]">
+    Best Of VoltX
+  </h2>
+
+  <div
+    class="flex md:grid md:grid-cols-4 gap-6 overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory"
+  >
+    <div
+      *ngFor="let product of featuredProducts"
+      (click)="viewDetails(product.id)"
+      class="min-w-[220px] md:min-w-0 flex-shrink-0 cursor-pointer bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 snap-start"
+    >
+      <!-- IMAGE -->
+      <div class="relative w-full h-[250px] overflow-hidden">
+        <img
+          [src]="product.imageUrls?.[0] || 'assets/no-image.png'"
+          alt="{{ product.name }}"
+          class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+        />
+      </div>
+
+      <!-- NAME -->
+      <div class="p-4 text-center">
+        <h3 class="font-semibold text-lg text-[#3e3948] truncate">
+          {{ product.name }}
+        </h3>
+      </div>
+    </div>
+  </div>
+</section>
+

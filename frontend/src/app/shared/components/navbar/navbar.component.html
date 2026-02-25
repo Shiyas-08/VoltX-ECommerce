@@ -1,0 +1,94 @@
+<!-- ================= MOBILE NAVBAR ================= -->
+<nav class="md:hidden fixed top-0 left-0 w-full bg-white z-50 shadow-sm">
+  <div class="flex items-center justify-between px-4 py-3">
+
+    <!-- Hamburger -->
+    <button (click)="toggleMobileMenu()">
+      <i class="fa-solid fa-bars text-xl"></i>
+    </button>
+
+    <!-- Logo -->
+    <h1 class="text-xl font-bold tracking-wide">VoltX</h1>
+
+    <!-- Right Icons -->
+    <div class="flex items-center gap-4">
+      <i class="fa-regular fa-user text-lg cursor-pointer"
+         (click)="openUserPopup()"></i>
+
+      <a routerLink="/cart" class="relative">
+        <i class="fa-solid fa-cart-shopping text-lg"></i>
+        <span *ngIf="cartCount > 0"
+              class="absolute -top-2 -right-2 text-[10px] font-bold">
+          {{ cartCount }}
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ✅ Mobile Backdrop -->
+  <div *ngIf="showMobileMenu"
+       class="fixed inset-0 bg-black/30 z-40"
+       (click)="toggleMobileMenu()">
+  </div>
+
+  <!-- ✅ Mobile Slide Menu -->
+  <div *ngIf="showMobileMenu"
+       class="fixed top-[56px] left-0 w-full bg-white shadow-lg z-50">
+
+    <div class="flex flex-col px-6 py-4 gap-4 text-base">
+      <a routerLink="/home" (click)="toggleMobileMenu()">Home</a>
+      <a routerLink="/products" (click)="toggleMobileMenu()">Shop</a>
+      <a routerLink="/about" (click)="toggleMobileMenu()">About</a>
+      <a routerLink="/wishlist" (click)="toggleMobileMenu()">Wishlist</a>
+      <a routerLink="/orders" (click)="toggleMobileMenu()">My Orders</a>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ================= DESKTOP NAVBAR ================= -->
+<nav class="hidden md:flex items-center mt-[20px] bg-[#F9F8FF]
+           justify-between text-[#272136]
+           px-[60px] py-6 rounded-2xl shadow-sm">
+
+  <!-- Logo -->
+  <h1 class="text-3xl font-bold tracking-wide">VoltX</h1>
+
+  <!-- Links -->
+  <div class="flex items-center space-x-10">
+    <a routerLink="/home" class="hover:text-[#9D7CFD]">Home</a>
+    <a routerLink="/products" class="hover:text-[#9D7CFD]">Shop</a>
+    <a routerLink="/about" class="hover:text-[#9D7CFD]">About</a>
+  </div>
+
+  <!-- Icons -->
+  <div class="flex items-center space-x-6 relative">
+
+    <a routerLink="/wishlist" class="relative">
+      <i class="fa-regular fa-heart text-xl"></i>
+      <span *ngIf="visualListCount > 0"
+            class="absolute -top-2 -right-3 text-xs">
+        {{ visualListCount }}
+      </span>
+    </a>
+
+    <a routerLink="/cart" class="relative">
+      <i class="fa-solid fa-cart-shopping text-xl"></i>
+      <span *ngIf="cartCount > 0"
+            class="absolute -top-2 -right-3 text-xs">
+        {{ cartCount }}
+      </span>
+    </a>
+
+    <i class="fa-regular fa-user text-xl cursor-pointer"
+       (click)="openUserPopup()"></i>
+  </div>
+</nav>
+
+<!-- ================= USER POPUP ================= -->
+<app-user-popup
+  *ngIf="showUserPopup"
+  [user]="userData"
+  (closePopup)="closeUserPopup()"
+  (profileEvent)="goToProfile()">
+</app-user-popup>

@@ -1,0 +1,27 @@
+# ---------- ANGULAR ----------
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.angular/cache/
+frontend/.vscode/
+
+# ---------- .NET ----------
+backend/bin/
+backend/obj/
+backend/.vs/
+
+# ---------- ENV / SECRETS ----------
+backend/appsettings.Development.json
+frontend/src/environments/environment*.ts
+
+# ---------- LOGS ----------
+*.log
+
+# ---------- VS / USER ----------
+.vscode/
+*.user
+*.suo
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db

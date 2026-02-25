@@ -1,0 +1,61 @@
+.dropdown-enter {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.dropdown-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.2s ease-in-out;
+}
+    .outlined-cart {
+  color: transparent;                 /* hide fill color */
+  -webkit-text-stroke: 1.5px black;   /* create white border outline */
+}
+
+.outlined-cart:hover {
+  -webkit-text-stroke: 1.5px #c9b0ff; /* hover = purple outline */
+  color: transparent;
+}
+/* 👤 Outline-only user icon style */
+.outlined-user {
+  color: transparent;                 /* remove fill */
+  -webkit-text-stroke: 1.5px black;   /* white border outline */
+  transition: all 0.3s ease;
+}
+
+.outlined-user:hover {
+  -webkit-text-stroke: 1.5px #c9b0ff; /* hover → purple outline */
+  color: transparent;
+  transform: scale(1.1);              /* small pop effect */
+}
+/* 🌈 Make placeholder a bit softer */
+input::placeholder {
+  color: #9CA3AF;
+  opacity: 0.9;
+}
+
+/* 🌈 Placeholder & shadow refinement */
+input::placeholder {
+  color: #9CA3AF;
+  opacity: 0.9;
+}
+
+/* ✨ Subtle glow on focus */
+input:focus {
+  box-shadow: 0 0 6px rgba(156, 107, 255, 0.3);
+}
+:host {
+  display: block;
+  animation: slideDown 0.8s ease-in-out;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px); /* starts slightly above */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* slides down into place */
+  }
+}

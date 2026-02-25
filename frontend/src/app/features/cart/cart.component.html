@@ -1,0 +1,127 @@
+<section class="max-w-6xl mx-auto px-4 sm:px-5 py-8 sm:py-10">
+
+  <h2 class="text-2xl font-bold mb-6 text-[#272136]">
+    Your Cart
+  </h2>
+
+  <!-- EMPTY CART -->
+  <div *ngIf="cartItems.length === 0"
+       class="text-gray-500 text-center py-16">
+    Your cart is empty!
+  </div>
+
+  <!-- CART ITEMS -->
+  <div *ngFor="let item of cartItems"
+       class="bg-white rounded-xl shadow-md mb-4 p-4 sm:p-6">
+
+    <!-- MOBILE / DESKTOP WRAPPER -->
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+
+      <!-- LEFT SIDE -->
+      <div class="flex gap-4 items-start w-full">
+
+        <!-- Checkbox -->
+        <input
+          type="checkbox"
+          class="mt-2 w-5 h-5 accent-[#5a37a7]"
+          [checked]="selectedProductIds.includes(item.productId)"
+          (change)="toggleSelection(item.productId)"
+          [disabled]="item.isOutOfStock"
+        />
+
+        <!-- Image -->
+        <img
+          [src]="item.image"
+          alt="{{ item.name }}"
+          class="w-20 h-20 sm:w-24 sm:h-24
+                 rounded-lg object-cover border"
+        />
+
+        <!-- Info -->
+        <div class="flex-1">
+
+          <h3 class="font-semibold text-base sm:text-lg text-gray-900">
+            {{ item.name }}
+          </h3>
+
+          <p class="text-gray-500 text-sm mt-1">
+            Unit Price: ₹{{ item.price }}
+          </p>
+
+          <span *ngIf="item.isOutOfStock"
+                class="inline-block mt-2 px-3 py-[2px]
+                       text-xs font-medium
+                       text-red-700 bg-red-100 rounded-full">
+            Currently unavailable
+          </span>
+
+          <!-- Quantity -->
+          <div class="flex items-center gap-4 mt-4">
+            <button
+              (click)="decreaseQty(item)"
+              [disabled]="item.isOutOfStock"
+              class="w-9 h-9 flex items-center justify-center
+                     rounded-full bg-gray-100 text-lg
+                     active:scale-95
+                     disabled:opacity-50">
+              −
+            </button>
+
+            <span class="font-semibold text-lg">
+              {{ item.quantity }}
+            </span>
+
+            <button
+              (click)="increaseQty(item)"
+              [disabled]="item.isOutOfStock"
+              class="w-9 h-9 flex items-center justify-center
+                     rounded-full bg-gray-100 text-lg
+                     active:scale-95
+                     disabled:opacity-50">
+              +
+            </button>
+          </div>
+
+          <p class="mt-3 font-semibold text-gray-900">
+            Total: ₹{{ item.price * item.quantity }}
+          </p>
+        </div>
+      </div>
+
+      <!-- REMOVE BUTTON -->
+      <button
+        (click)="removeItem(item)"
+        class="w-full sm:w-auto
+               bg-red-500 text-white
+               py-2 px-5 rounded-lg
+               hover:bg-red-400 transition">
+        Remove
+      </button>
+    </div>
+  </div>
+
+  <!-- BOTTOM SUMMARY -->
+  <div *ngIf="cartItems.length > 0"
+       class="sticky bottom-0 bg-[#F9F8FF]
+              border-t mt-8 pt-4 pb-4
+              flex flex-col sm:flex-row
+              justify-between items-center gap-4">
+
+    <h3 class="text-lg sm:text-xl font-bold text-gray-900">
+      Selected Total: ₹{{ selectedTotal }}
+    </h3>
+
+    <button
+      class="w-full sm:w-auto
+             bg-[#5a37a7] text-white
+             px-10 py-3 rounded-lg
+             hover:bg-[#251646]
+             transition
+             disabled:opacity-50"
+      [disabled]="selectedProductIds.length === 0"
+      (click)="goToCheckout()">
+      Checkout
+    </button>
+  </div>
+
+</section>

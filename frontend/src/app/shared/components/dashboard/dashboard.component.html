@@ -1,0 +1,59 @@
+<div class="p-0">
+
+  <!-- TOP CARDS -->
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-10">
+    <div class="p-5 bg-white shadow rounded-xl border">
+      <h2 class="text-gray-500 text-sm">Total Orders</h2>
+      <p class="text-3xl font-bold text-blue-800 mt-2">{{ totalOrders }}</p>
+    </div>
+
+<div class="p-5 bg-gradient-to-br from-white to-gray-50 shadow rounded-xl border">
+      <h2 class="text-gray-500 text-sm">Total Users</h2>
+      <p class="text-3xl font-bold text-green-600 mt-2">{{ totalUsers }}</p>
+    </div>
+
+<div class="p-5 bg-gradient-to-br from-white to-gray-50 shadow rounded-xl border">
+      <h2 class="text-gray-500 text-sm">Delivered</h2>
+      <p class="text-3xl font-bold text-teal-600 mt-2">{{ deliveredOrders }}</p>
+    </div>
+
+<div class="p-5 bg-gradient-to-br from-white to-gray-50 shadow rounded-xl border">
+      <h2 class="text-gray-500 text-sm">Pending</h2>
+      <p class="text-3xl font-bold text-yellow-600 mt-2">{{ pendingOrders }}</p>
+    </div>
+
+<div class="p-5 bg-gradient-to-br from-white to-gray-50 shadow rounded-xl border">
+      <h2 class="text-gray-500 text-sm">Total Revenue</h2>
+      <p class="text-3xl font-bold text-purple-900 mt-2">₹{{ totalRevenue }}</p>
+    </div>
+  </div>
+
+  <!-- DONUT + LEGEND -->
+  <div class="bg-white p-8 rounded-xl shadow border flex flex-col md:flex-row gap-10 justify-center mb-8">
+
+    <div>
+      <h2 class="text-2xl font-bold mb-1">Orders</h2>
+      <p class="text-gray-500 mb-6">(Category Overview)</p>
+
+      <ul class="space-y-4">
+        <li *ngFor="let cat of legendData" class="flex items-center gap-3">
+          <span class="w-4 h-4 rounded-sm" [style.background]="cat.color"></span>
+          <span class="text-gray-700 text-lg">{{ cat.name }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="relative flex justify-center items-center">
+      <canvas id="categoryChart" width="330" height="330"></canvas>
+    </div>
+  </div>
+
+  <!-- MONTHLY REVENUE -->
+  <div class="bg-white p-6 rounded-xl shadow border">
+    <h3 class="text-xl font-bold mb-4">Monthly Revenue</h3>
+    <div style="height: 320px;">
+      <canvas id="monthlyRevenueChart"></canvas>
+    </div>
+  </div>
+
+</div>

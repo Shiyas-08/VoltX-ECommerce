@@ -1,0 +1,98 @@
+<section
+  *ngIf="product"
+  class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-12 items-start"
+>
+
+  <!-- IMAGE -->
+  <div>
+    <img
+      [src]="selectedImage"
+      class="w-full h-[420px] object-cover rounded-2xl shadow-sm bg-gray-100"
+    />
+
+    <div class="flex gap-3 mt-5 justify-center">
+      <img
+        *ngFor="let img of product?.imageUrls"
+        [src]="img"
+        (click)="selectedImage = img"
+        class="w-16 h-16 object-cover rounded-lg cursor-pointer border
+               hover:border-purple-500 transition"
+        [class.border-purple-600]="img === selectedImage"
+      />
+    </div>
+  </div>
+
+  <!-- DETAILS -->
+  <div class="flex flex-col">
+
+    <!-- TITLE -->
+    <h1 class="text-3xl font-semibold text-gray-900 leading-snug">
+      {{ product.name }}
+    </h1>
+
+    <!-- DESCRIPTION -->
+    <p class="text-gray-600 text-sm mt-2 max-w-lg">
+      {{ product.description }}
+    </p>
+
+    <!-- PRICE -->
+    <p class="text-3xl font-bold text-purple-600 mt-6">
+      ₹{{ product.price }}
+    </p>
+
+    <!-- STOCK STATUS -->
+    <p
+      *ngIf="product.stock === 0"
+      class="mt-2 text-sm text-red-600 font-medium"
+    >
+      Currently unavailable
+    </p>
+
+    <!-- QUANTITY -->
+    <div class="flex items-center gap-4 mt-6">
+      <button
+        (click)="decreaseQty()"
+        class="w-9 h-9 flex items-center justify-center
+               bg-gray-100 rounded-lg text-lg
+               hover:bg-gray-200 transition"
+      >
+        −
+      </button>
+
+      <span class="min-w-[24px] text-center font-semibold text-gray-800">
+        {{ quantity }}
+      </span>
+
+      <button
+        (click)="increaseQty()"
+        class="w-9 h-9 flex items-center justify-center
+               bg-gray-100 rounded-lg text-lg
+               hover:bg-gray-200 transition"
+      >
+        +
+      </button>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="flex gap-4 mt-8">
+      <button
+        (click)="addToCart()"
+        class="bg-purple-600 text-white px-8 py-3 rounded-lg
+               font-medium hover:bg-purple-700 transition"
+      >
+        Add to Cart
+      </button>
+
+      <button
+        (click)="buyNow()"
+        class="border border-purple-600 text-purple-600
+               px-8 py-3 rounded-lg font-medium
+               hover:bg-purple-50 transition"
+      >
+        Buy Now
+      </button>
+    </div>
+
+  </div>
+</section>
+

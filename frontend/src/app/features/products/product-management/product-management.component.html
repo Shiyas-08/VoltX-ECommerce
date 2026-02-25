@@ -1,0 +1,242 @@
+<div class="p-6 bg-[#F5F6FA] min-h-screen">
+
+  <!-- HEADER -->
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-[#272136]">
+      Product Management
+    </h2>
+
+    <button
+      type="button"
+      (click)="openAddModal()"
+      class="bg-[#7C3AED] hover:bg-[#5B21B6] text-white px-5 py-2 rounded-lg
+             font-medium shadow transition"
+    >
+      + Add Product
+    </button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="bg-white rounded-xl shadow overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+        <tr>
+          
+          <th class="px-4 py-3">ID</th>
+          <th class="px-4 py-3">Image</th>
+          <th class="px-4 py-3">Name</th>
+          <th class="px-4 py-3">Price</th>
+          <th class="px-4 py-3">Stock</th>
+          <th class="px-4 py-3">Category</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">Featured</th>
+          <th class="px-4 py-3 text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        
+        <tr *ngFor="let p of products"
+            class="border-t hover:bg-gray-50 transition">
+ 
+
+          <td class="px-4 py-3">{{ p.id }}</td>
+            <td class="px-4 py-3">
+        <img
+          *ngIf="p.images.length"
+          [src]="p.images[0].imageUrl"
+          alt="Product Image"
+          class="w-12 h-12 object-cover rounded-lg border"
+        />
+
+        <div
+          *ngIf="!p.images || p.images.length === 0"
+          class="w-12 h-12 flex items-center justify-center
+                text-xs text-gray-400 border rounded-lg">
+          No Image
+        </div>
+      </td>
+
+            
+          <td class="px-4 py-3 font-medium">{{ p.name }}</td>
+          <td class="px-4 py-3">₹{{ p.price }}</td>
+
+          <td class="px-4 py-3">
+            <span
+              [class.text-red-600]="p.stock === 0"
+              [class.text-gray-800]="p.stock > 0">
+              {{ p.stock }}
+            </span>
+          </td>
+
+          <td class="px-4 py-3">{{ p.categoryName }}</td>
+
+          <td class="px-4 py-3">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold"
+              [class.bg-green-100]="p.isActive"
+              [class.text-green-700]="p.isActive"
+              [class.bg-red-100]="!p.isActive"
+              [class.text-red-700]="!p.isActive">
+              {{ p.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+
+          <td class="px-4 py-3">
+            <span
+              [class.text-green-600]="p.isFeatured"
+              [class.text-gray-500]="!p.isFeatured">
+              {{ p.isFeatured ? 'Yes' : 'No' }}
+            </span>
+          </td>
+
+          <td class="px-4 py-3">
+            <div class="flex justify-center gap-3">
+              <button (click)="openEditModal(p)"
+                      class="text-blue-600 hover:text-blue-800">
+                Edit
+              </button>
+
+              <button (click)="toggleProduct(p.id)"
+                      class="text-yellow-600 hover:text-yellow-800">
+                Toggle
+              </button>
+
+           
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="products.length === 0">
+          <td colspan="8" class="text-center py-6 text-gray-500">
+            No products found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- ADD / EDIT MODAL -->
+<div *ngIf="showAddModal || showEditModal"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div
+    class="bg-white rounded-xl w-[90vw] max-w-5xl
+           max-h-[90vh] shadow-xl flex flex-col">
+
+    <!-- HEADER -->
+    <div class="px-6 py-4 border-b">
+      <h3 class="text-xl font-semibold">
+        {{ showEditModal ? 'Edit Product' : 'Add Product' }}
+      </h3>
+    </div>
+
+    <!-- BODY -->
+    <form
+      class="flex-1 overflow-y-auto p-6
+             grid grid-cols-1
+             lg:grid-cols-{{ showEditModal ? '2' : '1' }}
+             gap-6"
+      (ngSubmit)="showEditModal ? updateProduct() : saveProduct()">
+
+      <!-- LEFT : PRODUCT FORM -->
+      <div class="space-y-4">
+
+        <input [(ngModel)]="productForm.name"
+               name="name"
+               required
+               placeholder="Product Name"
+               class="w-full border p-2 rounded" />
+
+        <div class="grid grid-cols-2 gap-4">
+          <input type="number"
+                 [(ngModel)]="productForm.price"
+                 name="price"
+                 required
+                 placeholder="Price"
+                 class="w-full border p-2 rounded" />
+
+          <input type="number"
+                 [(ngModel)]="productForm.stock"
+                 name="stock"
+                 required
+                 placeholder="Stock"
+                 class="w-full border p-2 rounded" />
+        </div>
+
+        <select [(ngModel)]="productForm.categoryId"
+                name="categoryId"
+                required
+                class="w-full border p-2 rounded">
+          <option value="">Select Category</option>
+          <option *ngFor="let c of categories" [value]="c.id">
+            {{ c.name }}
+          </option>
+        </select>
+
+        <textarea [(ngModel)]="productForm.description"
+                  name="description"
+                  rows="4"
+                  placeholder="Description"
+                  class="w-full border p-2 rounded"></textarea>
+
+        <label class="flex items-center gap-2">
+          <input type="checkbox"
+                 [(ngModel)]="productForm.isFeatured"
+                 name="isFeatured" />
+          Featured
+        </label>
+
+        <!-- ADD MODE IMAGE -->
+        <input *ngIf="showAddModal"
+               type="file"
+               multiple
+               (change)="onImageSelect($event)" />
+      </div>
+
+      <!-- RIGHT : IMAGE MANAGER (EDIT ONLY) -->
+      <div *ngIf="showEditModal"
+           class="border rounded-lg p-4 h-fit">
+
+        <h4 class="font-semibold mb-3 text-gray-700">
+          Product Images
+        </h4>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+          <div *ngFor="let img of productImages"
+               class="relative group">
+            <img [src]="img.imageUrl"
+                 class="w-full h-28 object-cover rounded border" />
+
+            <button type="button"
+                    (click)="removeImage(img.id)"
+                    class="absolute top-1 right-1 bg-red-600 text-white
+                           text-xs px-2 py-1 rounded opacity-0
+                           group-hover:opacity-100 transition">
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <input type="file"
+               accept="image/*"
+               (change)="uploadImage($event)"
+               class="w-full border p-2 rounded" />
+      </div>
+
+      <!-- FOOTER -->
+      <div class="lg:col-span-2 flex justify-end gap-3 pt-4 border-t">
+        <button type="button"
+                (click)="closeModal()"
+                class="px-4 py-2 border rounded">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-4 py-2 bg-purple-600 text-white rounded">
+          Save
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

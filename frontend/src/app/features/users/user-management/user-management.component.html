@@ -1,0 +1,117 @@
+<div class="bg-white shadow rounded-lg p-6">
+  <h2 class="text-xl font-semibold text-gray-800 mb-4">Manage Users</h2>
+
+  <!-- Search -->
+  <div class="flex items-center gap-2 mb-4">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      (input)="filterUsers()"
+      placeholder="Search by name or email..."
+      class="border border-gray-300 rounded-md px-3 py-2 text-sm w-64
+             focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+    />
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center py-10 text-gray-500">
+    Loading users...
+  </div>
+
+  <!-- Table Wrapper (Responsive) -->
+  <div class="overflow-x-auto">
+    <table
+      *ngIf="!loading && filteredUsers.length"
+      class="min-w-full border border-gray-200 text-sm rounded-md overflow-hidden"
+    >
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="py-2 px-4 text-left">ID</th>
+          <th class="py-2 px-4 text-left">Name</th>
+          <th class="py-2 px-4 text-left">Email</th>
+          <th class="py-2 px-4 text-left">Phone</th>
+          <th class="py-2 px-4 text-left">Role</th>
+          <th class="py-2 px-4 text-center">Status</th>
+          <th class="py-2 px-4 text-center">Actions</th>
+        </tr>
+      </thead>
+
+     <tbody>
+  <ng-container *ngFor="let user of filteredUsers">
+    <tr
+      *ngIf="user.roleId !== 1"
+      class="border-t hover:bg-gray-50 transition"
+    >
+
+          <!-- ID -->
+          <td class="py-2 px-4 font-medium text-gray-800">
+            {{ user.id }}
+          </td>
+
+          <!-- Name -->
+          <td class="py-2 px-4 font-medium text-gray-800">
+            {{ user.name }}
+          </td>
+
+          <!-- Email -->
+          <td class="py-2 px-4 text-gray-700">
+            {{ user.email }}
+          </td>
+
+          <!-- Phone -->
+          <td class="py-2 px-4">
+            {{ user.phone || '-' }}
+          </td>
+
+          <!-- Role -->
+          <td class="py-2 px-4 capitalize">
+            {{ user.roleId }}
+          </td>
+
+          <!-- Status -->
+          <td class="py-2 px-4 text-center">
+            <span
+              class="px-3 py-1 rounded-full text-xs font-semibold"
+              [ngClass]="
+                user.isBlocked
+                  ? 'bg-red-100 text-red-800'
+                  : 'bg-green-100 text-green-800'
+              "
+            >
+              {{ user.isBlocked ? 'Blocked' : 'Active' }}
+            </span>
+          </td>
+
+          <!-- Actions -->
+          <td class="py-2 px-4 text-center">
+            <button
+              (click)="toggleBlock(user)"
+              class="inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium
+                     transition focus:outline-none"
+              [ngClass]="
+                user.isBlocked
+                  ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                  : 'bg-red-100 text-red-700 hover:bg-red-200'
+              "
+            >
+              <i
+                class="fa-solid"
+                [ngClass]="user.isBlocked ? 'fa-unlock' : 'fa-ban'"
+              ></i>
+              {{ user.isBlocked ? 'Unblock' : 'Block' }}
+            </button>
+          </td>
+         </tr>
+  </ng-container>
+</tbody>
+    </table>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!loading && !filteredUsers.length"
+    class="text-center py-10 text-gray-500"
+  >
+    No users found.
+  </div>
+</div>

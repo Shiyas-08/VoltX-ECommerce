@@ -1,0 +1,89 @@
+<!-- Backdrop -->
+<div class="fixed inset-0 bg-black/40 z-40" (click)="close()"></div>
+
+<!-- Popup Card -->
+<div
+  class="fixed top-1/2 left-1/2 z-50 w-[320px]
+         -translate-x-1/2 -translate-y-1/2
+         bg-white rounded-2xl shadow-lg p-6"
+>
+
+  <!-- AVATAR -->
+  <div class="flex flex-col items-center mb-4">
+    <div class="w-16 h-16 rounded-full bg-[#654597] text-white flex items-center justify-center text-3xl font-bold">
+      {{ avatarLetter }}
+    </div>
+
+    <!-- LOGGED IN -->
+    <ng-container *ngIf="user; else guestInfo">
+      <h3 class="text-lg font-semibold mt-3 text-gray-800">
+        {{ user?.name }}
+      </h3>
+      <p class="text-sm text-gray-500">
+        {{ user?.email }}
+      </p>
+    </ng-container>
+
+    <!-- GUEST VIEW -->
+    <ng-template #guestInfo>
+      <h3 class="text-lg font-semibold mt-3 text-gray-800">
+        Guest User
+      </h3>
+      <p class="text-sm text-gray-500">
+        You are not logged in
+      </p>
+    </ng-template>
+
+  </div>
+
+  <hr class="my-4">
+
+  <!-- BUTTONS -->
+  <div class="flex flex-col gap-3">
+
+    <!-- LOGGED IN BUTTONS -->
+    <ng-container *ngIf="user; else guestButtons">
+
+      <a
+        routerLink="/orders"
+        (click)="close()"
+        class="w-full py-2 px-4 rounded-xl  bg-gradient-to-r from-[#441891] to-[#9D7CFD]
+ text-white text-center hover:bg-purple-600 transition"
+      >
+        My Orders
+      </a>
+<button
+  (click)="goToProfile()"
+  class="w-full py-2 px-4 rounded-xl
+         border border-[#9D7CFD] text-[#654597]
+         hover:bg-[#9D7CFD] hover:text-white
+         transition text-center font-medium"
+>
+  My Profile
+</button>
+
+
+ 
+      <button
+        (click)="onLogout()"
+        class="py-2 px-4 rounded-xl bg-red-600 text-white hover:bg-red-700 transition"
+      >
+        Logout
+      </button>
+
+    </ng-container>
+    <!-- GUEST BUTTON -->
+    <ng-template #guestButtons>
+      <a
+        routerLink="/auth/login"
+        (click)="close()"
+        class="w-full py-2 px-4 rounded-xl  bg-gradient-to-r from-[#7C3AED] to-[#9D7CFD]
+ text-white text-center hover:bg-purple-600 transition"
+      >
+        Login / Register
+      </a>
+    </ng-template>
+
+  </div>
+
+</div>

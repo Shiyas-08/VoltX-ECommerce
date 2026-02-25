@@ -1,0 +1,192 @@
+<div class="max-w-4xl mx-auto p-6">
+  <h2 class="text-2xl font-bold mb-6">Checkout</h2>
+
+  <!-- EMPTY -->
+  <div *ngIf="checkoutItems.length === 0"
+       class="p-6 bg-gray-100 rounded text-center text-gray-600">
+    No items to checkout
+  </div>
+
+  <!-- ITEMS -->
+  <div *ngFor="let item of checkoutItems"
+       class="flex items-center gap-4 border-b py-4">
+    <img
+      [src]="item.image || 'assets/no-image.png'"
+      class="w-20 h-20 rounded object-cover border" />
+
+    <div class="flex-1">
+      <p class="font-semibold">{{ item.name }}</p>
+      <p class="text-sm text-gray-600">
+        ₹{{ item.price }} × {{ item.quantity }}
+      </p>
+    </div>
+
+    <p class="font-semibold">
+      ₹{{ item.price * item.quantity }}
+    </p>
+  </div>
+
+  <!-- ⭐ SAVED ADDRESSES -->
+  <div class="mt-6 bg-gray-50 p-5 rounded-lg border"
+       *ngIf="savedAddresses.length > 0">
+
+    <h4 class="text-lg font-bold mb-4">Saved Addresses</h4>
+
+    <!-- ⭐ USE NEW ADDRESS -->
+    <label
+      class="flex items-start gap-3 p-3 border rounded mb-3 cursor-pointer hover:bg-gray-100">
+
+      <input
+        type="radio"
+        name="savedAddress"
+        [value]="null"
+        [(ngModel)]="selectedAddressId"
+        (change)="useNewAddress()"
+        class="mt-1" />
+
+      <div class="text-sm font-semibold">
+        Use New Address
+      </div>
+    </label>
+
+    <!-- ⭐ SAVED LIST -->
+    <label
+      *ngFor="let addr of savedAddresses"
+      class="flex items-start gap-3 p-3 border rounded mb-3 cursor-pointer hover:bg-gray-100">
+
+      <input
+        type="radio"
+        name="savedAddress"
+        [value]="addr.id"
+        [(ngModel)]="selectedAddressId"
+        (change)="selectSavedAddress(addr)"
+        class="mt-1" />
+
+      <div class="text-sm">
+        <p class="font-semibold">{{ addr.fullName }}</p>
+        <p class="text-gray-600">
+          {{ addr.addressLine1 }}, {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}
+        </p>
+        <p class="text-gray-500">{{ addr.phone }}</p>
+      </div>
+
+    </label>
+  </div>
+
+  <!-- ⭐ ADDRESS FORM -->
+  <div class="mt-6 bg-gray-50 p-5 rounded-lg border"
+       [class.opacity-60]="selectedAddressId"
+       [class.pointer-events-none]="selectedAddressId">
+
+    <h4 class="text-lg font-bold mb-4">Delivery Address</h4>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <input [(ngModel)]="addressModel.fullName"
+             placeholder="Full Name"
+             class="border p-2 rounded" />
+
+      <input
+        [(ngModel)]="addressModel.phone"
+        name="phone"
+        type="tel"
+        maxlength="10"
+        inputmode="numeric"
+        pattern="[0-9]{10}"
+        (keypress)="allowOnlyNumbers($event)"
+        placeholder="Phone"
+        class="border p-2 rounded" />
+
+      <!-- phone error -->
+      <p class="text-red-500 text-sm md:col-span-2"
+         *ngIf="addressModel.phone && addressModel.phone.length !== 10">
+        Enter valid 10-digit phone number
+      </p>
+
+      <textarea
+        [(ngModel)]="addressModel.addressLine1"
+        rows="3"
+        placeholder="Flat, House no., Building, Company, Apartment"
+        class="border p-2 rounded md:col-span-2"></textarea>
+
+      <input
+        [(ngModel)]="addressModel.addressLine2"
+        placeholder="Landmark(optional)"
+        class="border p-2 rounded md:col-span-2" />
+
+      <input
+        [(ngModel)]="addressModel.city"
+        placeholder="City"
+        class="border p-2 rounded" />
+
+      <!-- STATE -->
+      <div class="relative">
+        <select
+          [(ngModel)]="addressModel.state"
+          name="state"
+          class="border p-2 rounded w-full h-11 bg-white appearance-none pr-10">
+
+          <option value="">Select State</option>
+          <option *ngFor="let s of states" [value]="s">
+            {{ s }}
+          </option>
+        </select>
+
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
+          ▼
+        </div>
+      </div>
+
+      <input
+        [(ngModel)]="addressModel.pincode"
+        maxlength="6"
+        placeholder="Pincode"
+        class="border p-2 rounded" />
+
+    </div>
+
+    <!-- SAVE CHECKBOX -->
+    <label class="flex items-center gap-2 mt-4 text-sm">
+      <input
+        type="checkbox"
+        [(ngModel)]="saveAddress"
+        name="saveAddress" />
+      Save this address for future orders
+    </label>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="mt-6 bg-gray-50 p-5 rounded-lg border">
+    <h4 class="text-lg font-bold mb-3">Payment Method</h4>
+
+    <div class="flex gap-6 text-sm">
+      <label class="flex items-center gap-2">
+        <input type="radio" value="UPI" [(ngModel)]="paymentMethod" />
+        UPI
+      </label>
+
+      <label class="flex items-center gap-2">
+        <input type="radio" value="CARD" [(ngModel)]="paymentMethod" />
+        Card
+      </label>
+    </div>
+
+    <p class="text-xs text-gray-500 mt-2">
+      Payment will be completed via Razorpay in next step
+    </p>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="flex justify-between items-center mt-8">
+    <p class="text-lg font-semibold">
+      Total: ₹{{ getTotal() }}
+    </p>
+
+    <button
+      (click)="placeOrder()"
+      [disabled]="loading || checkoutItems.length === 0"
+      class="px-6 py-2 bg-[#3e3948] hover:bg-[#251646] text-white rounded-md">
+      {{ loading ? 'Processing...' : 'Place Order' }}
+    </button>
+  </div>
+</div>

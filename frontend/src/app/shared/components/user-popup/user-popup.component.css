@@ -1,0 +1,11 @@
+/* .btn-primary {
+  @apply py-2 px-4 rounded-xl bg-gradient-to-r from-[#441891] to-[#9D7CFD] text-white text-center;
+}
+
+.btn-outline {
+  @apply py-2 px-4 rounded-xl border border-[#9D7CFD] text-[#654597] hover:bg-[#9D7CFD] hover:text-white transition;
+}
+
+.btn-danger {
+  @apply py-2 px-4 rounded-xl bg-red-600 text-white hover:bg-red-700 transition;
+} */

@@ -1,0 +1,11 @@
+@import "node_modules/ngx-toastr/toastr.css";
+
+/* Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #F9F8FF;
+}
+

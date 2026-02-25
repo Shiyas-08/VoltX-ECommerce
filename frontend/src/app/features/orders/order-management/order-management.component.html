@@ -1,0 +1,177 @@
+<div class="bg-white rounded-xl shadow p-6">
+
+  <!-- HEADER -->
+  <h2 class="text-xl font-semibold text-gray-800 mb-6">
+    Manage Orders
+  </h2>
+
+  <!-- LOADER -->
+  <div *ngIf="loading" class="py-10 text-center text-gray-500">
+    Loading orders...
+  </div>
+
+  <!-- TABLE -->
+  <div *ngIf="!loading && orders.length" class="overflow-x-auto">
+    <table class="min-w-full border border-gray-200 rounded-lg text-sm">
+
+      <!-- TABLE HEAD -->
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="px-4 py-4 text-left">Order ID</th>
+          <th class="px-4 py-4 text-left">Customer</th>
+          <th class="px-4 py-4 text-left">Total</th>
+          <th class="px-4 py-4 text-left">Date</th>
+          <th class="px-4 py-4 text-left">Status</th>
+          <th class="px-4 py-4 text-left">Change Status</th>
+          <th class="px-4 py-4 text-center">View</th>
+        </tr>
+      </thead>
+
+      <!-- TABLE BODY -->
+      <tbody class="divide-y">
+
+        <tr *ngFor="let o of orders" class="hover:bg-gray-50 transition">
+
+          <!-- ORDER ID -->
+          <td class="px-4 py-4 font-medium">#{{ o.id }}</td>
+
+          <!-- CUSTOMER -->
+          <td class="px-4 py-4">
+            {{ o.address.fullName || 'N/A' }}
+          </td>
+
+          <!-- TOTAL -->
+          <td class="px-4 py-4 font-semibold">
+            ₹{{ o.total }}
+          </td>
+
+          <!-- DATE -->
+          <td class="px-4 py-4 text-gray-500">
+            {{ o.date | date:'dd MMM yyyy, hh:mm a' }}
+          </td>
+
+          <!-- STATUS BADGE -->
+          <td class="px-4 py-4">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+              [ngClass]="{
+                'bg-yellow-100 text-yellow-800': o.status === 'Pending',
+                'bg-blue-100 text-blue-800': o.status === 'Paid',
+                'bg-purple-100 text-purple-800': o.status === 'Packed',
+                'bg-indigo-100 text-indigo-800': o.status === 'Shipped',
+                'bg-cyan-100 text-cyan-800': o.status === 'OutForDelivery',
+                'bg-green-100 text-green-800': o.status === 'Delivered',
+                'bg-red-100 text-red-800': o.status === 'Cancelled'
+              }">
+              {{ o.status }}
+            </span>
+          </td>
+
+          <!-- CHANGE STATUS -->
+<td class="px-4 py-4">
+  <ng-container *ngIf="getNextStatuses(o.status).length; else noAction">
+
+    <select
+      class="min-w-[170px] px-3 py-2 rounded-lg
+             border border-gray-300 bg-white text-sm
+             focus:outline-none focus:ring-2 focus:ring-indigo-500
+             hover:border-indigo-400 transition"
+      (ngModelChange)="changeStatus(o, $event)"
+      [ngModel]="null">
+
+      <!-- PLACEHOLDER -->
+      <option [ngValue]="null" disabled selected>
+        Change status
+      </option>
+
+      <!-- NEXT STATUSES -->
+      <option *ngFor="let s of getNextStatuses(o.status)" [ngValue]="s">
+        {{ s }}
+      </option>
+
+    </select>
+
+  </ng-container>
+
+  <ng-template #noAction>
+    <span class="text-gray-400 italic text-sm">
+      No actions
+    </span>
+  </ng-template>
+</td>
+
+
+          <td class="px-4 py-4 text-center">
+            <button
+              (click)="viewOrder(o)"
+              class="text-indigo-600 hover:text-indigo-800 font-medium">
+              View
+            </button>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!loading && !orders.length"
+       class="py-10 text-center text-gray-500">
+    No orders found
+  </div>
+</div>
+
+<div *ngIf="selectedOrder"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white w-[480px] rounded-xl shadow-lg p-6 relative">
+
+    <button
+      (click)="closeModal()"
+      class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+      ✕
+    </button>
+
+    <h3 class="text-lg font-semibold mb-4">
+      Order Details
+    </h3>
+
+    <div class="space-y-1 text-sm mb-4">
+      <p><b>Order ID:</b> #{{ selectedOrder.id }}</p>
+      <p><b>Status:</b> {{ selectedOrder.status }}</p>
+      <p><b>Total:</b> ₹{{ selectedOrder.total }}</p>
+    </div>
+
+    <div *ngIf="selectedOrder.address" class="mb-5">
+      <p class="font-semibold mb-1">Delivery Address</p>
+      <p class="text-sm text-gray-700 leading-relaxed">
+        {{ selectedOrder.address.fullName }} <br>
+        {{ selectedOrder.address.phone }} <br>
+        {{ selectedOrder.address.addressLine1 }},
+        {{ selectedOrder.address.addressLine2 }} <br>
+        {{ selectedOrder.address.city }},
+        {{ selectedOrder.address.state }} - {{ selectedOrder.address.pincode }}
+      </p>
+    </div>
+
+    <div>
+      <p class="font-semibold mb-2">Items</p>
+
+      <div *ngFor="let i of selectedOrder.items"
+           class="flex items-center gap-3 border-b py-3 last:border-b-0">
+
+        <img
+          [src]="i.image || 'assets/no-image.png'"
+          class="w-12 h-12 rounded object-cover border" />
+
+        <div class="flex-1">
+          <p class="font-medium text-sm">{{ i.name }}</p>
+          <p class="text-xs text-gray-500">
+            {{ i.quantity }} × ₹{{ i.price }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

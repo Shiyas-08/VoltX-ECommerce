@@ -1,0 +1,15 @@
+
+    select {
+      appearance: auto;
+      max-height: 40px;
+      overflow-y: hidden;
+    }
+
+    select:focus {
+      overflow-y: auto;
+      height: auto;
+    }
+
+    select option {
+      padding: 4px 8px;
+    }
