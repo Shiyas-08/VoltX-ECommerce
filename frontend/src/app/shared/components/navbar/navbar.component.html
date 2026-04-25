@@ -25,13 +25,13 @@
     </div>
   </div>
 
-  <!-- ✅ Mobile Backdrop -->
+  <!--Mobile Backdrop -->
   <div *ngIf="showMobileMenu"
        class="fixed inset-0 bg-black/30 z-40"
        (click)="toggleMobileMenu()">
   </div>
 
-  <!-- ✅ Mobile Slide Menu -->
+  <!-- Mobile Slide Menu -->
   <div *ngIf="showMobileMenu"
        class="fixed top-[56px] left-0 w-full bg-white shadow-lg z-50">
 
@@ -39,7 +39,7 @@
       <a routerLink="/home" (click)="toggleMobileMenu()">Home</a>
       <a routerLink="/products" (click)="toggleMobileMenu()">Shop</a>
       <a routerLink="/about" (click)="toggleMobileMenu()">About</a>
-      <a routerLink="/wishlist" (click)="toggleMobileMenu()">Wishlist</a>
+      <a routerLink="/products/wishlist" (click)="toggleMobileMenu()">Wishlist</a>
       <a routerLink="/orders" (click)="toggleMobileMenu()">My Orders</a>
     </div>
 
@@ -64,7 +64,7 @@
   <!-- Icons -->
   <div class="flex items-center space-x-6 relative">
 
-    <a routerLink="/wishlist" class="relative">
+    <a routerLink="/products/wishlist" class="relative">
       <i class="fa-regular fa-heart text-xl"></i>
       <span *ngIf="visualListCount > 0"
             class="absolute -top-2 -right-3 text-xs">

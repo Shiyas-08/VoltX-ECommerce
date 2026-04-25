@@ -25,7 +25,7 @@ constructor(
   ngOnInit(): void {
     if (!this.auth.isLoggedIn()) {
       this.toastr.warning('Please login to view your wishlist');
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
       return;
     }
 

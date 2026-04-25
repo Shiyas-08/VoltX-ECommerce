@@ -45,9 +45,9 @@ export class AuthInterceptor implements HttpInterceptor {
         if (msg.includes('USER_BLOCKED')) {
 
           // prevent redirect loop
-          if (location.pathname !== '/login') {
+          if (location.pathname !== '/auth/login') {
             this.auth.clearUser();
-            window.location.href = '/login';
+            window.location.href = '/auth/login';
           }
 
           return throwError(() => error);
@@ -94,9 +94,9 @@ export class AuthInterceptor implements HttpInterceptor {
         this.isRefreshing = false;
 
         //  refresh failed → logout once
-        if (location.pathname !== '/login') {
+        if (location.pathname !== '/auth/login') {
           this.auth.clearUser();
-          window.location.href = '/login';
+          window.location.href = '/auth/login';
         }
 
         return throwError(() => err);

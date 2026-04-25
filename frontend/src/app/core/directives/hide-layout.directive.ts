@@ -26,8 +26,6 @@ export class HideLayoutDirective implements OnInit {
 
     const shouldHide =
       url.startsWith('/auth') ||     
-      url.startsWith('/login') ||    
-      url.startsWith('/register') || 
       url.startsWith('/admin') ||    
       url === '/not-found';          
 

@@ -98,7 +98,7 @@ restoreSession() {
 getHomeRoute(): string {
   const user = this.userSubject.value;
 
-  if (!user) return '/login';
+  if (!user) return '/auth/login';
   if (user.roleId === 1) return '/admin/dashboard';
   return '/home';
 }
@@ -117,7 +117,7 @@ logout() {
       localStorage.removeItem('lastRoute');
       localStorage.removeItem('currentUser');
 
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
     })
   );
 }

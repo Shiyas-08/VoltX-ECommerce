@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: '', component: ProductListComponent },
   { path: 'details/:id', component: ProductDetailsComponent },
 
-  { path: 'wishlist', component: WisualListComponent, canActivate: [AuthGuard] },
+  { path: 'wishlist', component:WisualListComponent, canActivate: [AuthGuard] },
   { path: 'featured', component: FeaturedProductsComponent, canActivate: [AuthGuard] },
 
 ];

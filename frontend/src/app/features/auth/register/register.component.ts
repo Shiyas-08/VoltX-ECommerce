@@ -32,7 +32,7 @@ export class RegisterComponent {
 this.auth.register(this.registerData).subscribe({
   next: () => {
     this.toastr.success('Registration successful. Please login.');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   },
 error: (err) => {
   let message = 'Registration failed. Try again';
