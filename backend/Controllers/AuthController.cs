@@ -16,7 +16,7 @@ namespace ECommerce.Controllers
         private readonly AppDbContext _context;
         private readonly IAuthService _authService;
         private readonly IConfiguration _config;
-
+    
         public AuthController(
             AppDbContext context,
             IAuthService authService,

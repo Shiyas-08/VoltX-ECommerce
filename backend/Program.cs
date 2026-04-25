@@ -1,4 +1,4 @@
-﻿using ECommerce.Data;
+using ECommerce.Data;
 using ECommerce.Models;
 using ECommerce.Services;
 using ECommerce.Services.Interfaces;
@@ -14,9 +14,15 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Explicitly load User Secrets for local development
+builder.Configuration.AddUserSecrets<Program>();
+
 // db
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
 
 // dipendency injection 
 builder.Services.AddScoped<IAuthService, AuthService>();
