@@ -191,11 +191,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// admin seeding
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    DbSeeder.SeedAdmin(db);
+
+    db.Database.Migrate();   // create/update DB tables first
+
+    DbSeeder.SeedAdmin(db);  // then seed admin / roles
 }
 
 app.Run();
