@@ -85,12 +85,13 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
-
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AllowAngular", p =>
-        p.WithOrigins("http://localhost:4200")
+        p.WithOrigins(
+            "http://localhost:4200",
+            "https://volt-x-e-commerce.vercel.app"
+        )
          .AllowAnyHeader()
          .AllowAnyMethod()
          .AllowCredentials());
